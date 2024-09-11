@@ -4,24 +4,24 @@
 
 class ArrayHandler {
 private:
-    int* _array;
-    int _max;
-    int _min;
-    int _size;
-    int _count;
+    int8_t* _array;
+    int8_t _max;
+    int8_t _min;
+    long long _size;
+    long long _count;
 public:
-    ArrayHandler(int size = 10){
+    ArrayHandler(int8_t size = 10){
         _size = size;
-        _array = new int[_size];
-        _max = INT32_MIN;
-        _min = INT32_MAX;
+        _array = new int8_t[_size];
+        _max = INT8_MIN;
+        _min = INT8_MAX;
         _count = 0;
     }
-    void Append(int new_element){
+    void Append(int8_t new_element){
         if (_count == _size) {
-            _size = _size + 10;
-            int* new_arr = new int[_size];
-            std::memcpy(new_arr, _array, _size*sizeof(int));
+            _size = _size * 4;
+            int8_t* new_arr = new int8_t[_size];
+            std::memcpy(new_arr, _array, _count*sizeof(int8_t));
             delete [] _array;
             _array = new_arr;
         }
@@ -30,14 +30,16 @@ public:
         if (_max < new_element) _max = new_element;
         if (_min > new_element) _min = new_element;
     }
-    int GetMax(){
+    int8_t GetMax(){
         return _max;
     }
-    int GetMin(){
+    int8_t GetMin(){
         return _min;
     }
-    int GetIndexElem(int elem){
-        for (int i = 0; i < _count; i++) 
+    long long GetIndexElem(int8_t elem){
+        // 1. Доп. память для хранения первого встречного индекса
+        // 2. Бин. поиск
+        for (int8_t i = 0; i < _count; i++) 
             if (elem == _array[i]) 
                 return i;
 
@@ -47,4 +49,3 @@ public:
         delete [] _array;
     }
 };
-
